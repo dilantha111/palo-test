@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery, useTheme } from "@mui/material";
 import { ForeCastItem } from "../../types/ForeCastItem.type";
 
 export type Props = {
@@ -6,9 +6,12 @@ export type Props = {
 };
 
 export default function WeatherCard({ forecastItem }: Props) {
-    return <Grid container direction={'row'} marginLeft={10}>
+    const theme = useTheme();
+    const isMobileView = useMediaQuery(theme.breakpoints.down('md'));
+
+    return <Grid container direction={'row'} marginLeft={isMobileView ? 0 : 10} marginTop={'70px'}>
         <Grid item>
-            <h3> Weather in {forecastItem.locationName} </h3>
+            <h3> Weather in {forecastItem.locationName}</h3>
             <p> {forecastItem.whetherForecast} </p>
         </Grid>
     </Grid>
