@@ -9,6 +9,7 @@ import { ForeCastItem } from "./types/ForeCastItem.type";
 import ForecastList from "./components/ForecastList";
 import WeatherCard from "./components/WeatherCard";
 import TrafficCamImg from "./components/TrafficCamImg/TrafficCamImg";
+import NotAvailable from "./components/NotAvailable/NotAvailable";
 
 function App() {
   const [date, setDate] = useState<Dayjs>(dayjs());
@@ -18,6 +19,7 @@ function App() {
 
   const loadForeCastData = useCallback(async () => {
     const forecastData = await getForeCastData(date, time);
+    setSelectedItem(undefined);
     setForecastItems(forecastData);
   }, [date, time]);
 
@@ -43,6 +45,7 @@ function App() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Container maxWidth="lg" style={{ marginTop: '50px' }}>
         <Grid container>
+
           <Grid item lg={8} md={12}>
             <Grid container>
               <Grid item>
@@ -65,18 +68,23 @@ function App() {
               </Grid>
             </Grid>
           </Grid>
+
           <Grid item lg={4} md={12}>
           </Grid>
+
           <Grid item lg={8} md={12}>
-            <Grid container direction={'column'} marginTop={'50px'}>
-              <Grid item>
-                <h2> Pick a location to see weather forecast and traffic </h2>
+            {forecastItems && forecastItems.length ?
+              <Grid container direction={'column'} marginTop={'50px'}>
+                <Grid item>
+                  <h2> Pick a location to see weather forecast and traffic </h2>
+                </Grid>
+                <Grid item>
+                  <ForecastList forecastItems={forecastItems} onClick={selectLocation} />
+                </Grid>
               </Grid>
-              <Grid item>
-                {forecastItems ? <ForecastList forecastItems={forecastItems} onClick={selectLocation} /> : null}
-              </Grid>
-            </Grid>
+              : <NotAvailable />}
           </Grid>
+
           <Grid item lg={4} md={12}>
             <Grid container>
               <Grid item>
@@ -84,12 +92,16 @@ function App() {
               </Grid>
             </Grid>
           </Grid>
+
           <Grid item lg={8} md={12}>
             {selectedItem ? <TrafficCamImg forecastItem={selectedItem} /> : null}
           </Grid>
+
           <Grid item lg={4} md={12}>
           </Grid>
+
         </Grid>
+
       </Container>
     </LocalizationProvider>
   )
