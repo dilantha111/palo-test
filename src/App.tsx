@@ -6,17 +6,19 @@ import dayjs, { Dayjs } from "dayjs";
 import { useCallback, useEffect, useState } from "react";
 import { getForeCastData } from "./api/ForeCast.api";
 import { ForeCastItem } from "./types/ForeCastItem.type";
-import ForecastList from "./components/ForecastList/ForecastList";
+import ForecastList from "./components/ForecastList";
+import WeatherCard from "./components/WeatherCard";
+import TrafficCamImg from "./components/TrafficCamImg/TrafficCamImg";
 
 function App() {
   const [date, setDate] = useState<Dayjs>(dayjs());
   const [time, setTime] = useState<Dayjs>(dayjs());
-  const [forecastItem, setForecastItem] = useState<ForeCastItem[]>();
+  const [forecastItems, setForecastItems] = useState<ForeCastItem[]>();
   const [selectedItem, setSelectedItem] = useState<ForeCastItem>();
 
   const loadForeCastData = useCallback(async () => {
     const forecastData = await getForeCastData(date, time);
-    setForecastItem(forecastData);
+    setForecastItems(forecastData);
   }, [date, time]);
 
   useEffect(() => {
@@ -41,11 +43,15 @@ function App() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Container maxWidth="lg" style={{ marginTop: '50px' }}>
         <Grid container>
-          <Grid item lg={8} md={10}>
+          <Grid item lg={8} md={12}>
+            <Grid container>
+              <Grid item>
+                <h2> Pick your date and Time </h2>
+              </Grid>
+            </Grid>
             <Grid container spacing={2}>
               <Grid item>
                 <DatePicker
-                  label="Controlled picker"
                   value={date}
                   onChange={onDateChange}
                 />
@@ -59,18 +65,29 @@ function App() {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item lg={4} md={10}>
+          <Grid item lg={4} md={12}>
           </Grid>
-          <Grid item lg={8} md={10}>
-            {forecastItem ? <ForecastList forecastItems={forecastItem} onClick={selectLocation} /> : null}
+          <Grid item lg={8} md={12}>
+            <Grid container direction={'column'} marginTop={'50px'}>
+              <Grid item>
+                <h2> Pick a location to see weather forecast and traffic </h2>
+              </Grid>
+              <Grid item>
+                {forecastItems ? <ForecastList forecastItems={forecastItems} onClick={selectLocation} /> : null}
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item lg={4} md={10}>
-            {selectedItem?.whetherForecast}
+          <Grid item lg={4} md={12}>
+            <Grid container marginTop={'70px'}>
+              <Grid item>
+                {selectedItem ? <WeatherCard forecastItem={selectedItem} /> : null}
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item lg={8} md={10}>
-            <img src={selectedItem?.screenShotUrl} style={{ maxWidth: '100%' }} />
+          <Grid item lg={8} md={12}>
+            {selectedItem ? <TrafficCamImg forecastItem={selectedItem} /> : null}
           </Grid>
-          <Grid item lg={4} md={10}>
+          <Grid item lg={4} md={12}>
           </Grid>
         </Grid>
       </Container>

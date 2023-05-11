@@ -20,7 +20,7 @@ export default function ForecastList({ forecastItems, onClick }: Props) {
 
     return <Box sx={{
         width: '100%', bgcolor: 'background.paper',
-        marginTop: '50px', maxHeight: '400px', overflow: 'scroll', borderColor: 'black', borderWidth: '1px'
+        maxHeight: '400px', overflow: 'scroll', borderColor: 'black', borderWidth: '1px'
     }}>
         <List component="nav" aria-label="main mailbox folders">
             {forecastItems.map(forecastItem => (
