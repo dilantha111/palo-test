@@ -3,41 +3,38 @@ import { LocalizationProvider, MobileTimePicker } from "@mui/x-date-pickers"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
-
-
-// fetchTrafficData(date: Date) {
-
-// }
-
-async function fetchWhetherData(date, time) {
-  const formattedDate = dayjs(date).format('YYYY-MM-DD');
-  const formattedTime = dayjs(time).format('HH:mm:ss');
-  const timeStr = `${formattedDate}T${formattedTime}`;
-
-  console.log(`${formattedDate}T${formattedTime}`);
-  return fetch('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast?' + new URLSearchParams({
-    date_time: timeStr
-  }));
-}
+import { useCallback, useEffect, useState } from "react";
+import { getForeCastData } from "./api/ForeCast.api";
+import { ForeCastItem } from "./types/ForeCastItem.type";
+import ForecastList from "./components/ForecastList/ForecastList";
 
 function App() {
   const [date, setDate] = useState<Dayjs>(dayjs());
   const [time, setTime] = useState<Dayjs>(dayjs());
-  const [locations, setLocations] = useState<string[]>();
+  const [forecastItem, setForecastItem] = useState<ForeCastItem[]>();
+  const [selectedItem, setSelectedItem] = useState<ForeCastItem>();
+
+  const loadForeCastData = useCallback(async () => {
+    const forecastData = await getForeCastData(date, time);
+    setForecastItem(forecastData);
+  }, [date, time]);
+
+  useEffect(() => {
+    loadForeCastData();
+  }, [loadForeCastData]);
 
   const onDateChange = async (newDate: Dayjs | null) => {
     if (!newDate) return;
     setDate(newDate);
-    fetchWhetherData(newDate, time);
   };
 
   const onTimeChange = async (newTime: Dayjs | null) => {
     if (!newTime) return;
     setTime(newTime);
-    const data = await (await fetchWhetherData(date, newTime)).json();
-    console.log(await data);
-    setLocations(data.items[0].forecasts.map(i => i.area));
+  };
+
+  const selectLocation = (selectedItem: ForeCastItem) => {
+    setSelectedItem(selectedItem);
   };
 
   return (
@@ -65,16 +62,15 @@ function App() {
           <Grid item lg={4} md={10}>
           </Grid>
           <Grid item lg={8} md={10}>
-            {locations?.map(i => <p key={i}>{i}</p>)}
+            {forecastItem ? <ForecastList forecastItems={forecastItem} onClick={selectLocation} /> : null}
           </Grid>
           <Grid item lg={4} md={10}>
-            weather
+            {selectedItem?.whetherForecast}
           </Grid>
           <Grid item lg={8} md={10}>
-            screenshot
+            <img src={selectedItem?.screenShotUrl} style={{ maxWidth: '100%' }} />
           </Grid>
           <Grid item lg={4} md={10}>
-            place holder
           </Grid>
         </Grid>
       </Container>
