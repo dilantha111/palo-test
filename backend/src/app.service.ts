@@ -5,7 +5,8 @@ import { ForeCastItem } from './types/ForeCastItem.type';
 export class AppService {
   private async getWhetherData(timeStr: string) {
     const data = await fetch(
-      'https://api.data.gov.sg/v1/environment/2-hour-weather-forecast?' +
+      process.env.WEATHER_FORECAST_URL +
+        '?' +
         new URLSearchParams({
           date_time: timeStr,
         }),
@@ -16,7 +17,8 @@ export class AppService {
 
   private async getTrafficData(timeStr: string) {
     const data = await fetch(
-      'https://api.data.gov.sg/v1/transport/traffic-images?' +
+      process.env.TRAFFIC_IMG_URL +
+        '?' +
         new URLSearchParams({
           date_time: timeStr,
         }),
