@@ -6,7 +6,7 @@ import { ForeCastItem } from './types/ForeCastItem.type';
 export class AppService {
   constructor(private readonly configService: ConfigService) { }
 
-  private async getWhetherData(timeStr: string) {
+  async getWhetherData(timeStr: string) {
     const data = await fetch(
       this.configService.get<string>('WEATHER_FORECAST_URL') +
       '?' +
@@ -18,7 +18,7 @@ export class AppService {
     return await data.json();
   }
 
-  private async getTrafficData(timeStr: string) {
+  async getTrafficData(timeStr: string) {
     const data = await fetch(
       this.configService.get<string>('TRAFFIC_IMG_URL') +
       '?' +
