@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ForeCastItem } from './types/ForeCastItem.type';
 
 @Injectable()
 export class AppService {
+  constructor(private readonly configService: ConfigService) { }
+
   private async getWhetherData(timeStr: string) {
     const data = await fetch(
-      process.env.WEATHER_FORECAST_URL +
-        '?' +
-        new URLSearchParams({
-          date_time: timeStr,
-        }),
+      this.configService.get<string>('WEATHER_FORECAST_URL') +
+      '?' +
+      new URLSearchParams({
+        date_time: timeStr,
+      }),
     );
 
     return await data.json();
@@ -17,11 +20,11 @@ export class AppService {
 
   private async getTrafficData(timeStr: string) {
     const data = await fetch(
-      process.env.TRAFFIC_IMG_URL +
-        '?' +
-        new URLSearchParams({
-          date_time: timeStr,
-        }),
+      this.configService.get<string>('TRAFFIC_IMG_URL') +
+      '?' +
+      new URLSearchParams({
+        date_time: timeStr,
+      }),
     );
 
     return await data.json();
@@ -46,17 +49,17 @@ export class AppService {
         );
         const currentLongDiff = Math.abs(
           nearestLocation.location.longitude -
-            location.label_location.longitude,
+          location.label_location.longitude,
         );
         const currentTotalDiff = currentLatDiff + currentLongDiff;
 
         const newLatDiff = Math.abs(
           cameraData[index].location.latitude -
-            location.label_location.latitude,
+          location.label_location.latitude,
         );
         const newLongDiff = Math.abs(
           cameraData[index].location.longitude -
-            location.label_location.longitude,
+          location.label_location.longitude,
         );
         const newTotalDiff = newLatDiff + newLongDiff;
 
