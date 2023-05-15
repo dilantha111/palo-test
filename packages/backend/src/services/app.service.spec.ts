@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
+import { ServiceUnavailableException } from '@nestjs/common';
 
 describe('AppService', () => {
     let appService: AppService;
@@ -65,4 +66,53 @@ describe('AppService', () => {
             ]);
         });
     });
+
+    describe('getWeatherData', () => {
+        it('should fetch weather data and return it when response is ok', async () => {
+            const expected = [{ temperature: 25 }, { temperature: 26 }];
+            jest.spyOn(global, 'fetch').mockResolvedValueOnce({
+                ok: true,
+                json: jest.fn().mockResolvedValueOnce(expected),
+            } as any);
+
+            const actual = await appService.getWeatherData('2023-04-30T01:00:00');
+
+            expect(actual).toEqual(expected);
+            expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('date_time=2023-04-30T01%3A00%3A00'));
+        });
+
+        it('should throw ServiceUnavailableException when response is not ok', async () => {
+            jest.spyOn(global, 'fetch').mockResolvedValueOnce({
+                ok: false,
+            } as any);
+
+            await expect(appService.getWeatherData('2023-04-30T01:00:00')).rejects.toThrow(ServiceUnavailableException);
+            expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('date_time=2023-04-30T01%3A00%3A00'));
+        });
+    });
+
+    describe('getTrafficData', () => {
+        it('should fetch traffic data and return it when response is ok', async () => {
+            const expected = [{ cameraId: '123' }, { cameraId: '456' }];
+            jest.spyOn(global, 'fetch').mockResolvedValueOnce({
+                ok: true,
+                json: jest.fn().mockResolvedValueOnce(expected),
+            } as any);
+
+            const actual = await appService.getTrafficData('2023-04-30T01:00:00');
+
+            expect(actual).toEqual(expected);
+            expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('date_time=2023-04-30T01%3A00%3A00'));
+        });
+
+        it('should throw ServiceUnavailableException when response is not ok', async () => {
+            jest.spyOn(global, 'fetch').mockResolvedValueOnce({
+                ok: false,
+            } as any);
+
+            await expect(appService.getTrafficData('2023-04-30T01:00:00')).rejects.toThrow(ServiceUnavailableException);
+            expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('date_time=2023-04-30T01%3A00%3A00'));
+        });
+    });
+
 });

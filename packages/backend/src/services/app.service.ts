@@ -1,10 +1,12 @@
 import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ForeCastItem } from '../types/ForeCastItem.type';
-import { TRAFFIC_CAM_SERVICE_NOT_AVAILABLE_TXT, WEATHER_SERVICE_NOT_AVAILABLE_TXT } from 'src/consts';
 
 @Injectable()
 export class AppService {
+  WEATHER_SERVICE_NOT_AVAILABLE_TXT = 'Weather Service is currently unavailable. Please try again later.';
+  TRAFFIC_CAM_SERVICE_NOT_AVAILABLE_TXT = 'Traffic Cam Service is currently unavailable. Please try again later.';
+
   constructor(private readonly configService: ConfigService) { }
 
   async getWeatherData(timeStr: string) {
@@ -19,7 +21,7 @@ export class AppService {
         return response.json();
       }
 
-      throw new ServiceUnavailableException(WEATHER_SERVICE_NOT_AVAILABLE_TXT);
+      throw new ServiceUnavailableException(this.WEATHER_SERVICE_NOT_AVAILABLE_TXT);
     });
 
     return data;
@@ -37,7 +39,7 @@ export class AppService {
         return response.json();
       }
 
-      throw new ServiceUnavailableException(TRAFFIC_CAM_SERVICE_NOT_AVAILABLE_TXT);
+      throw new ServiceUnavailableException(this.TRAFFIC_CAM_SERVICE_NOT_AVAILABLE_TXT);
     });
 
     return data;
