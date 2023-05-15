@@ -1,17 +1,15 @@
-# Weather Forecast Backend
+# Weather Forecast
 
 ## prerequisite
 
-- NodeJS latest ( v18.16.0)
-- Backend up and running https://github.com/dilantha111/palo-test-backend
+- Docker
 
 ## How to run
 
 - git clone https://github.com/dilantha111/palo-test-frontend.git
-- cd /palo-test-frontend
-- npm install
-- npm run dev
-- press 'o' in the terminal or access http://localhost:5173/ via browser
+- cd /palo-test
+- docker compose up
+- access http://localhost:5173/ via browser
 
 ## Assumptions
 
@@ -35,3 +33,9 @@
 - For User Interaction, chose trigger actions against changes to the date and time field, instead adding a
   separate submit button, since it would be less user actions and more interactive.
   - Further enhancement on this would be to throttle calling the API, and cache responses in a selected duration to reduce the load on backend.
+
+## Project Architecture
+- Mono repo has been used to accomadate backend and ui with lerna since it has helpful featuers like tagging, managing dependacy between packages etc
+
+## Deployment 
+- For deployment docker has been used to compose app and backend service
