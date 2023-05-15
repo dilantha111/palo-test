@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ForeCastItem } from './types/ForeCastItem.type';
-import { GetForecastQuery } from './validation/getForecastQuery';
+import { GetAllForecastEntities } from './dto/getForecastQuery';
 import { ConfigService } from '@nestjs/config';
 
 describe('AppController', () => {
@@ -46,7 +46,7 @@ describe('AppController', () => {
         "screenShotUrl": "https://images.data.gov.sg/api/traffic-images/2023/04/65b3a97f-1b68-4cc9-9cf0-da58edfbf7bc.jpg",
         "whetherForecast": "Cloudy"
       },];
-      const mockQueryParams: GetForecastQuery = { date_time: '2023-04-27T00:00:00' };
+      const mockQueryParams: GetAllForecastEntities = { date_time: '2023-04-27T00:00:00' };
       jest.spyOn(appService, 'getForecast').mockImplementation(() => Promise.resolve(mockForecast));
 
       const result = await appController.getForecast(mockQueryParams);
