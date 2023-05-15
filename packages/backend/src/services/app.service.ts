@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ForeCastItem } from './types/ForeCastItem.type';
+import { ForeCastItem } from '../types/ForeCastItem.type';
 
 @Injectable()
 export class AppService {

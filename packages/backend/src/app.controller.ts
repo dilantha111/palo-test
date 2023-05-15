@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AppService } from './services/app.service';
 import { ForeCastItem } from './types/ForeCastItem.type';
 import { GetAllForecastEntities } from './dto/getForecastQuery';
 

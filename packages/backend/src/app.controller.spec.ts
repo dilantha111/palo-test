@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppService } from './services/app.service';
 import { ForeCastItem } from './types/ForeCastItem.type';
 import { GetAllForecastEntities } from './dto/getForecastQuery';
 import { ConfigService } from '@nestjs/config';
