@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { AppService } from './services/app.service';
 import { ForeCastItem } from './types/ForeCastItem.type';
-import { GetAllForecastEntities } from './dto/getForecastQuery';
+import { GetAllForecastEntitiesDTO } from './dto/GetAllForecastEntitiesDTO';
 
 @Controller()
 export class AppController {
@@ -9,7 +9,7 @@ export class AppController {
 
   @Get('/forecast')
   async getForecast(
-    @Query() query: GetAllForecastEntities,
+    @Query() query: GetAllForecastEntitiesDTO,
   ): Promise<{ forecast: ForeCastItem[] }> {
     const forecast = await this.appService.getForecast(query.date_time);
     return { forecast };
