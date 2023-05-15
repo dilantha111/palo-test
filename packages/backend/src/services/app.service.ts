@@ -51,7 +51,22 @@ export class AppService {
 
     const locations = whetherData.area_metadata;
 
+    if (!locations || !locations.length) {
+      return [];
+    }
+
     const cameraData = trafficData.items[0].cameras;
+
+    if (!cameraData || !cameraData.length) {
+      return [];
+    }
+
+    const forecastData = whetherData.items[0].forecasts;
+
+    if (!forecastData || !forecastData.length) {
+      return [];
+    }
+
     const cameras = [];
 
     // finding nearest camera image to the location
@@ -92,7 +107,7 @@ export class AppService {
       foreCastList.push({
         locationName: locations[index].name,
         screenShotUrl: cameras[index].image,
-        whetherForecast: whetherData.items[0].forecasts[index].forecast,
+        whetherForecast: forecastData[index].forecast,
       });
     }
 
