@@ -1,0 +1,16 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start:ui": "cd packages/ui && npm run dev",
+    "start:backend": "cd packages/backend && npm start",
+    "dev": "concurrently --kill-others \"npm run start:ui\" \"npm run start:backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1",
+    "lerna": "^6.6.1"
+  }
+}
