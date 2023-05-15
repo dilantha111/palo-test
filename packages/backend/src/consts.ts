@@ -1,0 +1,2 @@
+export const WEATHER_SERVICE_NOT_AVAILABLE_TXT = 'Weather Service is currently unavailable. Please try again later.';
+export const TRAFFIC_CAM_SERVICE_NOT_AVAILABLE_TXT = 'Traffic Cam Service is currently unavailable. Please try again later.';

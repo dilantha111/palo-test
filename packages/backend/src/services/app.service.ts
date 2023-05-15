@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ServiceUnavailableException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ForeCastItem } from '../types/ForeCastItem.type';
+import { TRAFFIC_CAM_SERVICE_NOT_AVAILABLE_TXT, WEATHER_SERVICE_NOT_AVAILABLE_TXT } from 'src/consts';
 
 @Injectable()
 export class AppService {
@@ -13,9 +14,15 @@ export class AppService {
       new URLSearchParams({
         date_time: timeStr,
       }),
-    );
+    ).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
 
-    return await data.json();
+      throw new ServiceUnavailableException(WEATHER_SERVICE_NOT_AVAILABLE_TXT);
+    });
+
+    return data;
   }
 
   async getTrafficData(timeStr: string) {
@@ -25,9 +32,15 @@ export class AppService {
       new URLSearchParams({
         date_time: timeStr,
       }),
-    );
+    ).then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
 
-    return await data.json();
+      throw new ServiceUnavailableException(TRAFFIC_CAM_SERVICE_NOT_AVAILABLE_TXT);
+    });
+
+    return data;
   }
 
   async getForecast(timeStr: string): Promise<ForeCastItem[]> {
