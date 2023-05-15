@@ -1,10 +1,16 @@
 import { Grid } from "@mui/material";
 import './NotAvailable.css';
 
-export default function NotAvailable() {
+export type Props = {
+    errorMsg?: string
+};
+
+const defaultErrorMsg = 'No Weather forecast or Traffic cam is available. Please select a different date and time.';
+
+export default function NotAvailable({ errorMsg = defaultErrorMsg }: Props) {
     return <Grid container>
         <Grid item>
-            <p> No Weather forecast or Traffic cam is available. Please select a different date and time. </p>
+            <p> {errorMsg} </p>
         </Grid>
     </Grid>
 }

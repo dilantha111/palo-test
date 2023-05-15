@@ -1,12 +1,23 @@
 import { render, screen } from '@testing-library/react';
-import NotAvailable from './NotAvailable';
+import NotAvailable, { Props } from './NotAvailable';
 
-describe('NotAvailable', () => {
-    it('renders the correct message', () => {
+describe('NotAvailable component', () => {
+    it('should render the default error message when errorMsg prop is not provided', () => {
         render(<NotAvailable />);
-        const message = screen.getByText(
+
+        const errorMessage = screen.getByText(
             'No Weather forecast or Traffic cam is available. Please select a different date and time.'
         );
-        expect(message).toBeInTheDocument();
+
+        expect(errorMessage).toBeInTheDocument();
+    });
+
+    it('should render the provided error message when errorMsg prop is provided', () => {
+        const errorMsg: Props['errorMsg'] = 'Something went wrong';
+        render(<NotAvailable errorMsg={errorMsg} />);
+
+        const errorMessage = screen.getByText(errorMsg);
+
+        expect(errorMessage).toBeInTheDocument();
     });
 });

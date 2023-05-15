@@ -16,11 +16,20 @@ function App() {
   const [time, setTime] = useState<Dayjs>(dayjs());
   const [forecastItems, setForecastItems] = useState<ForeCastItem[]>();
   const [selectedItem, setSelectedItem] = useState<ForeCastItem>();
+  const [errorMsg, setErrorMsg] = useState<string>();
 
   const loadForeCastData = useCallback(async () => {
-    const forecastData = await getForeCastData(date, time);
-    setSelectedItem(undefined);
-    setForecastItems(forecastData);
+    try {
+      const forecastData = await getForeCastData(date, time);
+      setErrorMsg(undefined);
+      setSelectedItem(undefined);
+      setForecastItems(forecastData);
+    } catch (_error) {
+      const error = _error as Error;
+      setSelectedItem(undefined);
+      setForecastItems(undefined);
+      setErrorMsg(error.message);
+    }
   }, [date, time]);
 
   useEffect(() => {
@@ -82,7 +91,7 @@ function App() {
                   <ForecastList forecastItems={forecastItems} onClick={selectLocation} />
                 </Grid>
               </Grid>
-              : <NotAvailable />}
+              : <NotAvailable errorMsg={errorMsg || undefined} />}
           </Grid>
 
           <Grid item lg={4} md={12}>
