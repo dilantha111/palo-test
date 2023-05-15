@@ -1,4 +1,4 @@
-# Weather Forecast Backend
+# Weather Forecast
 
 ## prerequisite
 
