@@ -6,7 +6,7 @@ import { ForeCastItem } from './types/ForeCastItem.type';
 export class AppService {
   constructor(private readonly configService: ConfigService) { }
 
-  async getWhetherData(timeStr: string) {
+  async getWeatherData(timeStr: string) {
     const data = await fetch(
       this.configService.get<string>('WEATHER_FORECAST_URL') +
       '?' +
@@ -31,7 +31,7 @@ export class AppService {
   }
 
   async getForecast(timeStr: string): Promise<ForeCastItem[]> {
-    const whetherData = await this.getWhetherData(timeStr);
+    const whetherData = await this.getWeatherData(timeStr);
     const trafficData = await this.getTrafficData(timeStr);
 
     const locations = whetherData.area_metadata;

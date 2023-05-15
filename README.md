@@ -6,7 +6,7 @@
 
 ## How to run
 
-- git clone https://github.com/dilantha111/palo-test-frontend.git
+- git clone https://github.com/dilantha111/palo-test.git
 - cd /palo-test
 - docker compose up
 - access http://localhost:5173/ via browser

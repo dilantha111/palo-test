@@ -23,7 +23,7 @@ describe('AppService', () => {
 
     describe('getForecast', () => {
         it('should return forecast items', async () => {
-            jest.spyOn(appService, 'getWhetherData').mockResolvedValueOnce({
+            jest.spyOn(appService, 'getWeatherData').mockResolvedValueOnce({
                 area_metadata: [
                     { name: 'Location 1', label_location: { latitude: 1, longitude: 2 } },
                     { name: 'Location 2', label_location: { latitude: 3, longitude: 4 } },
