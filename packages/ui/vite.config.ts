@@ -9,4 +9,12 @@ export default defineConfig({
     environment: 'happy-dom',
     setupFiles: ['src/setupTest.ts']
   },
+  server: {
+    watch: {
+      usePolling: true,
+    },
+    host: true,
+    strictPort: true,
+    port: 5173,
+  }
 })

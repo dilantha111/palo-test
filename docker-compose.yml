@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  backend:
+    container_name: backend
+    environment:
+      - WEATHER_FORECAST_URL=https://api.data.gov.sg/v1/environment/2-hour-weather-forecast
+      - TRAFFIC_IMG_URL=https://api.data.gov.sg/v1/transport/traffic-images
+    build:
+      context: ./packages/backend
+      dockerfile: ./Dockerfile
+    image: server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./packages/backend:/backend
+    command: npm run start:dev
+  ui:
+    container_name: ui
+    build:
+      context: ./packages/ui
+      dockerfile: ./Dockerfile
+    image: ui
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./packages/ui:/ui
+    command: npm run dev
